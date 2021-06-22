@@ -1,5 +1,7 @@
 name: A workflow for my Hello World file
 on: push
+env:
+  GREETING: 'Mona'
 jobs:
   build:
     name: Hello world action
@@ -8,4 +10,18 @@ jobs:
       - uses: actions/checkout@v1
       - uses: ./action-a
         with:
-          MY_NAME: 'Mona'
+          MY_NAME: ${{env.GREETING}}
+  notify:
+    name: Send SMS
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Sending SMS Notification'
+        uses: twilio-labs/actions-sms@v1
+        with:
+          fromPhoneNumber: '+436642040403'
+          toPhoneNumber: '+436642040403'
+          message: 'Success greeting ${{env.GREETING}}'
+        env:
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_API_KEY: ${{ secrets.TWILIO_API_KEY }}
+          TWILIO_API_SECRET: ${{ secrets.TWILIO_API_SECRET }}
