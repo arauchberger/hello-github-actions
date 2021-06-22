@@ -14,6 +14,7 @@ jobs:
   notify:
     name: Send SMS
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: 'Sending SMS Notification'
         uses: twilio-labs/actions-sms@v1
